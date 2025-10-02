@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="BOTTOM_CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.roundrobin.controller.MainController">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" />
+    </padding>
+   <BorderPane>
+      <top>
+      
+          <!-- Header -->
+          <VBox alignment="BOTTOM_CENTER" spacing="10" BorderPane.alignment="CENTER">
+              <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Round Robin CPU Scheduling Simulator">
+                  <font>
+                      <Font name="System Bold" size="24.0" />
+                  </font>
+              </Label>
+              <Label style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="Simulate CPU scheduling using Round Robin algorithm with customizable quantum" />
+            <BorderPane.margin>
+               <Insets bottom="10.0" left="5.0" right="5.0" top="2.0" />
+            </BorderPane.margin>
+          </VBox>
+      </top>
+      <left>
+      
+          <!-- Input Section -->
+          <VBox spacing="15" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8;" BorderPane.alignment="CENTER">
+              <padding>
+                  <Insets bottom="15" left="15" right="15" top="15" />
+              </padding>
+      
+              <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Process Input" />
+               <VBox spacing="5">
+                   <Label style="-fx-font-weight: bold;" text="Process ID:" />
+                   <TextField fx:id="processIdField" prefWidth="120" promptText="e.g., P1" />
+               </VBox>
+   
+                  <VBox spacing="5">
+                   <Label style="-fx-font-weight: bold;" text="Arrival Time:" />
+                   <TextField fx:id="arrivalTimeField" prefWidth="120" promptText="e.g., 0" />
+               </VBox>
+   
+                  <VBox spacing="5">
+                   <Label style="-fx-font-weight: bold;" text="Burst Time:" />
+                   <TextField fx:id="burstTimeField" prefWidth="120" promptText="e.g., 5" />
+               </VBox>
+   
+                  <VBox spacing="5">
+                   <Label style="-fx-font-weight: bold;" text="Quantum:" />
+                   <TextField fx:id="quantumField" prefWidth="120" promptText="e.g., 2" />
+               </VBox>
+   
+                  <VBox spacing="5">
+                   <Label style="-fx-font-weight: bold; -fx-text-fill: transparent;" text="Actions:" /> <!-- Spacer -->
+                   <HBox spacing="5">
+                       <Button onAction="#handleAddProcess" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" text="Add Process" />
+                       <Button onAction="#handleRunSimulation" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" text="Run Simulation" />
+                       <Button onAction="#handleClear" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Clear All" />
+                   </HBox>
+               </VBox>
+            <BorderPane.margin>
+               <Insets right="10.0" top="20.0" />
+            </BorderPane.margin>
+          </VBox>
+      </left>
+      <center>
+      
+          <!-- Process Table -->
+          <VBox spacing="10" BorderPane.alignment="CENTER">
+              <HBox alignment="CENTER_LEFT" spacing="10">
+                  <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Process Table" />
+                  <Button onAction="#handleExportCSV" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" text="Export CSV" />
+              </HBox>
+      
+              <TableView fx:id="processTable" editable="true" prefHeight="200" style="-fx-border-color: #e0e0e0; -fx-border-radius: 4;">
+                  <columns>
+                      <TableColumn fx:id="pidColumn" prefWidth="100" text="Process ID" />
+                      <TableColumn fx:id="arrivalColumn" prefWidth="100" text="Arrival Time" />
+                      <TableColumn fx:id="burstColumn" prefWidth="100" text="Burst Time" />
+                      <TableColumn fx:id="completionColumn" prefWidth="120" text="Completion Time" />
+                      <TableColumn fx:id="turnaroundColumn" prefWidth="120" text="Turnaround Time" />
+                      <TableColumn fx:id="waitingColumn" prefWidth="100" text="Waiting Time" />
+                  </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+              </TableView>
+         
+             <!-- Gantt Chart -->
+             <VBox spacing="10">
+                 <HBox alignment="CENTER_LEFT" spacing="10">
+                     <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Gantt Chart" />
+                     <Button onAction="#handleSaveGanttChart" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;" text="Save as Image" />
+                 </HBox>
+         
+                 <VBox fx:id="ganttChartContainer" prefHeight="250" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8;">
+                     <padding>
+                         <Insets bottom="10" left="10" right="10" top="10" />
+                     </padding>
+                 </VBox>
+             </VBox>
+          </VBox>
+      </center>
+      <bottom>
+      
+          <!-- Metrics Section -->
+          <VBox alignment="CENTER" spacing="8.0" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8;" BorderPane.alignment="CENTER">
+              <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+              </padding>
+      
+              <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Performance Metrics" />
+      
+              <GridPane alignment="CENTER" hgap="20" vgap="10">
+                  <columnConstraints>
+                      <ColumnConstraints prefWidth="200" />
+                      <ColumnConstraints prefWidth="200" />
+                      <ColumnConstraints prefWidth="200" />
+                  </columnConstraints>
+      
+                  <rowConstraints>
+                      <RowConstraints prefHeight="30.0" />
+                      <RowConstraints prefHeight="30.0" />
+                  <RowConstraints />
+                  <RowConstraints />
+                  </rowConstraints>
+      
+                  <Label style="-fx-font-weight: bold;" text="Average Waiting Time:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <Label fx:id="avgWaitingTimeLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 14;" text="Avg Waiting Time: -" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+      
+                  <Label style="-fx-font-weight: bold;" text="Average Turnaround Time:" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  <Label fx:id="avgTurnaroundTimeLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 14;" text="Avg Turnaround Time: -" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      
+                  <Label style="-fx-font-weight: bold;" text="CPU Utilization:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                  <Label fx:id="cpuUtilizationLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 14;" text="CPU Utilization: -" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      
+                  <Label style="-fx-font-weight: bold;" text="Throughput:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  <Label fx:id="throughputLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 14;" text="Throughput: -" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+      
+                  <Label style="-fx-font-weight: bold;" text="Total Processes:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="totalProcessesLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 14;" text="Total Processes: -" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      
+                  <Label style="-fx-font-weight: bold;" text="Total Time:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label fx:id="totalTimeLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 14;" text="Total Time: -" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+              </GridPane>
+            <BorderPane.margin>
+               <Insets top="3.0" />
+            </BorderPane.margin>
+          </VBox>
+      </bottom>
+      <VBox.margin>
+         <Insets bottom="2.0" left="2.0" right="2.0" top="5.0" />
+      </VBox.margin>
+   </BorderPane>
+
+</VBox>
